@@ -13,6 +13,9 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: spring-cloud-dataflow-apps-plugin
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -46,11 +49,10 @@ jobs:
           echo JFROG_CLI_BUILD_NAME=spring-cloud-dataflow-apps-plugin-main >> $GITHUB_ENV
           echo JFROG_CLI_BUILD_NUMBER=$GITHUB_RUN_NUMBER >> $GITHUB_ENV
           echo spring_cloud_dataflow_apps_plugin_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
-
       - name: Build and Publish
         run: |
           mvn clean
-          jfrog rt mvn -gs spring-cloud-dataflow-apps-plugin/settings.xml -Pfull -B install
+          jfrog rt mvn -gs settings.xml -Pfull -B install
           jfrog rt build-publish
       - name: Capture Test Results
         if: ${{ always() }}
@@ -60,7 +62,6 @@ jobs:
           path: '**/target/surefire-reports/**/*.*'
           retention-days: 7
           if-no-files-found: ignore
-
       - name: Clean cache
         run: |
           find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
