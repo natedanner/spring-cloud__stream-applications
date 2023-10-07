@@ -12,6 +12,7 @@ env:
 
 jobs:
   build:
+    if: ${{ github.repository == 'spring-cloud/stream-applications' }}
     runs-on: ubuntu-latest
     steps:
 
@@ -59,7 +60,7 @@ jobs:
           -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-'${milestoneVersion} \
           -B
         jfrog rt build-clean
-        jfrog rt mvn -gs spring-cloud-dataflow-apps-plugin/settings.xml/settings.xml -Pstagingmilestone,full,deploymentfiles -B install 
+        jfrog rt mvn -gs spring-cloud-dataflow-apps-plugin/settings.xml -Pstagingmilestone,full,deploymentfiles -B install -DskipTests
         jfrog rt build-publish
         echo spring_cloud_dataflow_apps_plugin_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
 
