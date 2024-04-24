@@ -220,7 +220,7 @@ public class DebeziumFlatteningIntegrationTest {
 
 		messages = DebeziumTestUtils.receiveAll(outputDestination);
 
-		assertThat(messages).hasSize((isDropTombstones.equals("false")) ? 4 : 3);
+		assertThat(messages).hasSize("false".equals(isDropTombstones) ? 4 : 3);
 
 		JsonAssert.assertJsonEquals(
 				DebeziumTestUtils.resourceToString("classpath:/json/mysql_flattened_update_inventory_customers.json"),
@@ -230,14 +230,14 @@ public class DebeziumFlatteningIntegrationTest {
 		JsonAssert.assertJsonEquals("{\"id\":" + newRecordId + "}",
 				toString(messages.get(1).getHeaders().get("debezium_key")));
 
-		if (deleteHandlingMode.equals("none")) {
+		if ("none".equals(deleteHandlingMode)) {
 			assertThat(toString(messages.get(2).getPayload())).isEqualTo("null");
 			assertThat(messages.get(1).getHeaders().get("debezium_destination")).isEqualTo("my-topic.inventory.customers");
 			JsonAssert.assertJsonEquals("{\"id\":" + newRecordId + "}",
 					toString(messages.get(1).getHeaders().get("debezium_key")));
 		}
 
-		if (isDropTombstones.equals("false")) {
+		if ("false".equals(isDropTombstones)) {
 			assertThat(messages.get(3).getPayload()).isEqualTo("null".getBytes());
 			assertThat(messages.get(3).getHeaders().get("debezium_destination"))
 					.isEqualTo("my-topic.inventory.customers");
@@ -248,7 +248,7 @@ public class DebeziumFlatteningIntegrationTest {
 
 	private static boolean isFlatteningEnabled(DebeziumProperties props) {
 		String unwrapType = props.getProperties().get("transforms.unwrap.type");
-		return StringUtils.hasText(unwrapType) && unwrapType.equals("io.debezium.transforms.ExtractNewRecordState");
+		return StringUtils.hasText(unwrapType) && "io.debezium.transforms.ExtractNewRecordState".equals(unwrapType);
 	}
 
 	private String toString(Object object) {

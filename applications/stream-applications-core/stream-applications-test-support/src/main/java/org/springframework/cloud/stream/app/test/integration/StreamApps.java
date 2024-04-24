@@ -102,7 +102,7 @@ public abstract class StreamApps implements AutoCloseable, Startable {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	public static abstract class Builder<S extends StreamApps> {
+	public abstract static class Builder<S extends StreamApps> {
 		private final String streamName;
 
 		private GenericContainer source;
@@ -184,7 +184,7 @@ public abstract class StreamApps implements AutoCloseable, Startable {
 		}
 
 		private String sinkInputDestination() {
-			return (CollectionUtils.isEmpty(processors) || processors.size() <= 1) ? streamName
+			return CollectionUtils.isEmpty(processors) || processors.size() <= 1 ? streamName
 				: "processor_" + (processors.size() - 1);
 		}
 	}

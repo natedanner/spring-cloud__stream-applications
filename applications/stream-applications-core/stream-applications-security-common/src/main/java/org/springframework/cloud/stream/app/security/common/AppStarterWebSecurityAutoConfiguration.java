@@ -103,11 +103,11 @@ public class AppStarterWebSecurityAutoConfiguration {
 			 * See https://stackoverflow.com/questions/51079564/spring-security-antmatchers-not-being-
 			 * applied-on-post-requests-and-only-works-wi/51088555
 			 */
-			http.csrf((csrfConfigurer) ->
+			http.csrf(csrfConfigurer ->
 					csrfConfigurer.ignoringRequestMatchers(MethodAwareEndpointRequest.toAnyEndpoint(HttpMethod.POST)));
 		}
 		if (securityProperties.isEnabled()) {
-			http.authorizeHttpRequests((authorizeHttpRequests) ->
+			http.authorizeHttpRequests(authorizeHttpRequests ->
 							authorizeHttpRequests
 									.requestMatchers(MethodAwareEndpointRequest.toAnyEndpoint(HttpMethod.POST)).hasRole("ADMIN")
 									.requestMatchers(EndpointRequest.toLinks()).permitAll()
@@ -118,7 +118,7 @@ public class AppStarterWebSecurityAutoConfiguration {
 					.httpBasic(Customizer.withDefaults());
 		}
 		else {
-			http.authorizeHttpRequests((authorizeHttpRequests) ->
+			http.authorizeHttpRequests(authorizeHttpRequests ->
 					authorizeHttpRequests.anyRequest().permitAll());
 		}
 		return http.build();
@@ -131,7 +131,7 @@ public class AppStarterWebSecurityAutoConfiguration {
 
 		static RequestMatcher toAnyEndpoint(HttpMethod httpMethod) {
 			final EndpointRequest.EndpointRequestMatcher matcher = EndpointRequest.toAnyEndpoint();
-			return (request) -> {
+			return request -> {
 				if (!httpMethod.toString().equals(request.getMethod())) {
 					return false;
 				}

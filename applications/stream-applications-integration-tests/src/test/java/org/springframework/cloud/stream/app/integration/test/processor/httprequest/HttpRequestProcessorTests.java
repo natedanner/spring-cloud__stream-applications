@@ -43,7 +43,7 @@ import static org.springframework.cloud.stream.app.test.integration.AppLog.appLo
 
 @Tag("integration")
 abstract class HttpRequestProcessorTests {
-	private final static Logger logger = LoggerFactory.getLogger(HttpRequestProcessorTests.class);
+	private static final Logger logger = LoggerFactory.getLogger(HttpRequestProcessorTests.class);
 	private static MockWebServer server;
 
 	private static int serverPort;

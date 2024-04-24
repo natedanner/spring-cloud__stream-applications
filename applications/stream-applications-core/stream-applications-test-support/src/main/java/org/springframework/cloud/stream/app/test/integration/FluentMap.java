@@ -37,7 +37,7 @@ public class FluentMap<K, V> extends LinkedHashMap<K, V> {
 	}
 
 	public static FluentMap<String, String> fluentStringMap() {
-		return new FluentMap<String, String>();
+		return new FluentMap<>();
 	}
 
 	public FluentMap<K, V> withEntry(K key, V value) {

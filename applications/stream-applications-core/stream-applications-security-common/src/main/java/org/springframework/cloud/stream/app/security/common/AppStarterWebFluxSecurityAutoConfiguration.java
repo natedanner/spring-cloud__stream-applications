@@ -106,17 +106,17 @@ public class AppStarterWebFluxSecurityAutoConfiguration {
 			 * See https://stackoverflow.com/questions/51079564/spring-security-antmatchers-not-being-
 			 * applied-on-post-requests-and-only-works-wi/51088555
 			 */
-			http.csrf((csrfSpec) ->
+			http.csrf(csrfSpec ->
 					csrfSpec.requireCsrfProtectionMatcher(exchange ->
 							new AntPathMatcher().match(managementPath, exchange.getRequest().getPath().value())
 									? ServerWebExchangeMatcher.MatchResult.notMatch()
 									: ServerWebExchangeMatcher.MatchResult.match()));
 		}
 		if (!securityProperties.isEnabled()) {
-			http.authorizeExchange((authorizeExchangeSpec) -> authorizeExchangeSpec.anyExchange().permitAll());
+			http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.anyExchange().permitAll());
 		}
 		else {
-			http.authorizeExchange((authorizeExchangeSpec) -> authorizeExchangeSpec
+			http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
 							.pathMatchers(HttpMethod.POST, managementPath).hasRole("ADMIN")
 							.pathMatchers(
 									pathMappedEndpoints.getBasePath(),

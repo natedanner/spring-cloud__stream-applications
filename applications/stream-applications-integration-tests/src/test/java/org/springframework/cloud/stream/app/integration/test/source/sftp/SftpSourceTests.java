@@ -83,7 +83,7 @@ abstract class SftpSourceTests {
 
 		await().atMost(DEFAULT_DURATION).until(outputMatcher.payloadMatches((String s) -> {
 			logger.info("payload:{}", s);
-		return s.equals("\"/tmp/sftp-supplier/data.txt\"");
+		return "\"/tmp/sftp-supplier/data.txt\"".equals(s);
 		}));
 	}
 	@Test

@@ -35,7 +35,7 @@ public abstract class KafkaConfig {
 	/**
 	 * The KafkaContainer.
 	 */
-	public final static KafkaContainer kafka = new KafkaContainer(
+	public static final KafkaContainer kafka = new KafkaContainer(
 			DockerImageName.parse("confluentinc/cp-kafka"))
 			.withExposedPorts(9092, 9093)
 			.withNetwork(Network.SHARED)

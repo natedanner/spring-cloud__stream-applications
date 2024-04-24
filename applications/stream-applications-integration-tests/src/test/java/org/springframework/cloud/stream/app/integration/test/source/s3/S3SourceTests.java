@@ -92,7 +92,7 @@ abstract class S3SourceTests implements LocalstackContainerTest {
 		s3Client.putObject(r -> r.bucket("bucket").key("test"), resourceAsFile("s3/data").toPath());
 		Predicate<String> predicate = (String s) -> {
 			logger.info("payload:{}", s);
-			return s.equals("{\"args\":[\"filename=/tmp/s3-supplier/test\"],\"deploymentProps\":{},\"name\":\"myTask\"}");
+			return "{\"args\":[\"filename=/tmp/s3-supplier/test\"],\"deploymentProps\":{},\"name\":\"myTask\"}".equals(s);
 		};
 		await().atMost(DEFAULT_DURATION)
 			.until(outputMatcher.payloadMatches(predicate));
